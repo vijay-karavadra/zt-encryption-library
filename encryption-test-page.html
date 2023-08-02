@@ -66,12 +66,12 @@
       let xhr = new XMLHttpRequest();
       xhr.open('POST', apiUrl, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
-	  xhr.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjAxNjYzRDE4MjlCQ0Q3MjE4M0Q4ODkyRENGMEZCODY0IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2OTA5NzU5MzMsImV4cCI6MTY5MDk3OTUzMywiaXNzIjoiaHR0cHM6Ly9jdXN0b21lcnMtY2VudHJhbC12bS01Lnp0YS1nYXRld2F5LmNvbToyMTAyOSIsImF1ZCI6WyJJbnZvaWNlIiwiUHJvZHVjdCIsIndlYmFwaSJdLCJjbGllbnRfaWQiOiJjbGllbnQiLCJqdGkiOiJBRjkzRTY3QTBCMjcxNkI3OTYxNkYxMTgwQzhEMjcyOSIsImlhdCI6MTY5MDk3NTkzMywic2NvcGUiOlsiaW52b2ljZXM6cmVhZCIsImludm9pY2VzOndyaXRlIiwicHJvZHVjdHM6cmVhZCIsInByb2R1Y3RzOndyaXRlIiwid2ViYXBpOnJlYWQiLCJ3ZWJhcGk6d3JpdGUiXX0.Q9UvCi-EdBp2Mu57K2HukEkZdXTfHajmCXVtZD2qXwPra3573rVsrvh-5j8LL2zexWL52mM0OvxcbiersGwohTIbOArsADr2f2nkd2VpRJKw_PsRBNRGjUh8uONXlWx2tOCpG9tfnDqGLENmdTTlo0L36IV2P6zSQPe0faE3d4vbjG01agiEdyqNZLBU9N6TOvfQ3AoSeR30vxzOW0lMSdSdv7dmcHIHTpmqspPTur8HCWmaE7tfLGweSjGfzqY2NV4N6C_yynt3f_Kse67_szx0RwXBYhYtoEWNagJkEn0P8d1zZ3PyG8crExV2vKV2_Y6APivk6b1nkMZOgRXUSA');
+	  xhr.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjVERjBBN0E0Q0IxMERDMTA4QUM5REU3OUZEQjI5QzgzIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2OTA5ODQ4NDgsImV4cCI6MTY5MDk4ODQ0OCwiaXNzIjoiaHR0cHM6Ly9jdXN0b21lcnMtY2VudHJhbC12bS01Lnp0YS1nYXRld2F5LmNvbToyMTAyOSIsImF1ZCI6WyJJbnZvaWNlIiwiUHJvZHVjdCIsIndlYmFwaSJdLCJjbGllbnRfaWQiOiJjbGllbnQiLCJqdGkiOiI5OTM0QTQ5NkUxNkY2OTE3MDNGRUM1OTA4QUZCMUUxMCIsImlhdCI6MTY5MDk4NDg0OCwic2NvcGUiOlsiaW52b2ljZXM6cmVhZCIsImludm9pY2VzOndyaXRlIiwicHJvZHVjdHM6cmVhZCIsInByb2R1Y3RzOndyaXRlIiwid2ViYXBpOnJlYWQiLCJ3ZWJhcGk6d3JpdGUiXX0.Ug2a6S6vm7GgkHpg_9vihY_QO-DAWyiStNfHLQ1qWVttLwSGw0s4lIoyM2oOMcZIZUUYjd9AxmA31pN3ZmqkKhp6F2lxhEkJZDL1d-PX8azAr6EdFsVN4e-hw2Z32KP6GEQE6O5kZhlZ4k6xPDskAEZHgCn0RAJYClsonIfd4X6hHO1MCQTZddNPv5AqKL6zBrmMBQr1gBkq14U0xl0GDDoQSlAxiFbNAXhws5pAuziJOCXC49rfXnBoh3h6eXT3H4OW_1recKD6a_PUQD6uU6Gh7Px8NzIcRbGgJ2wulzgM9jWArxL9jlJapgd9VgiSB06QeZ8ZzlDmc8rS13W5uA');
 	 
       xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
           if (xhr.status === 200) {
-            console.log('XHR Response:', xhr.responseText);
+            //console.log('XHR Response:', xhr.responseText);
           } else {
             console.error('XHR Error:', xhr.status);
           }
