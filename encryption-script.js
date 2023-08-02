@@ -1,14 +1,38 @@
 // encryption-library.js
 
-  async function encryptData(data) {
-    // Implement your encryption logic here (e.g., using secure libraries and shared secret)
-    // For demonstration purposes, we'll use a simple Base64 encoding
-    //let encoder = new TextEncoder();
-    //let encryptedData = btoa(encoder.encode(data));
+async function encryptData(data) {
+  // Implement your encryption logic here
+  // For demonstration purposes, we'll use a basic Caesar cipher encryption
+  let encryptedData = "";
+  let shift = 3; // The number of positions to shift each character
 
-    //return encryptedData;
-	return data;
+  for (let i = 0; i < data.length; i++) {
+    let char = data[i];
+
+    // Shift only alphabetic characters (uppercase and lowercase)
+    if (/[a-zA-Z]/.test(char)) {
+      let code = char.charCodeAt(0);
+      let shiftedCode = code + shift;
+
+      // Handle wrap-around for lowercase letters
+      if (char >= 'a' && char <= 'z' && shiftedCode > 'z'.charCodeAt(0)) {
+        shiftedCode -= 26;
+      }
+
+      // Handle wrap-around for uppercase letters
+      if (char >= 'A' && char <= 'Z' && shiftedCode > 'Z'.charCodeAt(0)) {
+        shiftedCode -= 26;
+      }
+
+      encryptedData += String.fromCharCode(shiftedCode);
+    } else {
+      // Leave non-alphabetic characters unchanged
+      encryptedData += char;
+    }
   }
+
+  return encryptedData;
+}
 
 function interceptXHRRequests() {
   let open = XMLHttpRequest.prototype.open;
@@ -32,6 +56,9 @@ function interceptXHRRequests() {
           // Replace the original request body with the encrypted data
           console.log('logger:encryption-library, encrypted data: ' + encryptedData);
           send.call(this, encryptedData);
+
+          // Set a custom header for the encrypted data
+          this.setRequestHeader('X-Encrypted-Data', 'true');
         })
         .catch((error) => {
           console.error(error);
@@ -45,6 +72,7 @@ function interceptXHRRequests() {
     }
   };
 }
+
 
 interceptXHRRequests();
 
