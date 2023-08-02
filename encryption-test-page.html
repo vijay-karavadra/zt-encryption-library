@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Sample Page</title>
+</head>
+<body>
+  <h1>Add my pet to inventory</h1>
+
+  <!-- index.html -->
+  <form id="myForm">
+    <input type="text" name="category_name" placeholder="category" />
+    <input type="text" name="name" placeholder="name" />
+    <input type="text" name="photoUrls" placeholder="photo url" />
+    <input type="text" name="tag_name" placeholder="tag" />
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- Include the encryption library -->
+  <script src="encryption-script.js"></script>
+
+  <script>
+    // Handle form submission
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      let form = event.target;
+      let formData = new FormData(form);
+      let object = {
+        "id": 1,
+        "category": {
+          "id": 1,
+          "name": formData.get('category_name')
+        },
+        "name": formData.get('name'),
+        "photoUrls": [formData.get('photoUrls')],
+        "tags": [
+          {
+            "id": 1,
+            "name": formData.get('tag_name')
+          }
+        ],
+        "status": "available"
+      };
+
+      let json = JSON.stringify(object);
+
+      // Send the form data as an XHR POST request or fetch POST request
+      // The encryption will be automatically handled by the 'encryption-library.js'
+      // Replace 'https://api.example.com/endpoint' with your actual API endpoint
+      let apiUrl = 'https://customers-central-vm-5.zta-gateway.com/v2/pet';
+
+      // Using XMLHttpRequest
+      let xhr = new XMLHttpRequest();
+      xhr.open('POST', apiUrl, true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+	  xhr.setRequestHeader('Authorization', 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjAxNjYzRDE4MjlCQ0Q3MjE4M0Q4ODkyRENGMEZCODY0IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2OTA5NzA0NTksImV4cCI6MTY5MDk3NDA1OSwiaXNzIjoiaHR0cHM6Ly9jdXN0b21lcnMtY2VudHJhbC12bS01Lnp0YS1nYXRld2F5LmNvbToyMTAyOSIsImF1ZCI6WyJJbnZvaWNlIiwiUHJvZHVjdCIsIndlYmFwaSJdLCJjbGllbnRfaWQiOiJjbGllbnQiLCJqdGkiOiIyNTg5NDZFQzkwNUM0QzhDMTlDN0QxNjNFNDdFQjc0RCIsImlhdCI6MTY5MDk3MDQ1OSwic2NvcGUiOlsiaW52b2ljZXM6cmVhZCIsImludm9pY2VzOndyaXRlIiwicHJvZHVjdHM6cmVhZCIsInByb2R1Y3RzOndyaXRlIiwid2ViYXBpOnJlYWQiLCJ3ZWJhcGk6d3JpdGUiXX0.RHzNyhDNiPLh64lZtRzj68opK7xTITrlCd7tVcez2eenhyGp7JpVPg65ZybxzvP5Cvspy130Eb8WDL08NvIBBQ0ZS_VR5LRe6Y3J59b7XkFbNIzhCrDuSvB6cPJmwna2dfWUT-oRTHTxM5dV2GXpxH3QE0rkVHr7cn0m3WMoJ0v25IPDO2XEVBsqJY2gp79PLQAIVoXjrQVE_AXQXF_z-d984zYs57SFr3McPtu0WVy0hkVN2QmOAyBD8Bl7iNEhxbmeZ8o8h-SPiZzgy5ip2kwpP1FM6Kfuz32e6pYKZt3RoNrBB1xg-CIA1pMg2NPJMNJbxI5QE04704s-gAO0mA');
+	 
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            console.log('XHR Response:', xhr.responseText);
+          } else {
+            console.error('XHR Error:', xhr.status);
+          }
+        }
+      };
+      xhr.send(json);
+
+      // Using fetch
+      // fetch(apiUrl, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: json
+      // })
+      // .then(response => response.json())
+      // .then(data => {
+      //   console.log('Fetch Response:', data);
+      // })
+      // .catch(error => {
+      //   console.error('Fetch Error:', error);
+      // });
+    });
+  </script>
+</body>
+</html>
