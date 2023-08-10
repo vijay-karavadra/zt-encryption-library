@@ -14,96 +14,96 @@
 
 
   <!-- index.html -->
-  <form id="myForm" hidden>
-    <label for="category_name">Category:</label>
-    <input type="text" name="category_name" placeholder="category" value="Dog" />
-    <br><br>
+  <!-- <form id="myForm" hidden> -->
+    <!-- <label for="category_name">Category:</label> -->
+    <!-- <input type="text" name="category_name" placeholder="category" value="Dog" /> -->
+    <!-- <br><br> -->
 
-    <label for="name">Name:</label>
-    <input type="text" name="name" placeholder="name" value="Charlie" />
-    <br><br>
+    <!-- <label for="name">Name:</label> -->
+    <!-- <input type="text" name="name" placeholder="name" value="Charlie" /> -->
+    <!-- <br><br> -->
 
-    <label for="photoUrls">Photo URL:</label>
-    <input type="text" name="photoUrls" placeholder="photo url" value="test photo url" />
-    <br><br>
+    <!-- <label for="photoUrls">Photo URL:</label> -->
+    <!-- <input type="text" name="photoUrls" placeholder="photo url" value="test photo url" /> -->
+    <!-- <br><br> -->
 
-    <label for="tag_name">Tag:</label>
-    <input type="text" name="tag_name" placeholder="tag" value="cute" />
-    <br><br>
+    <!-- <label for="tag_name">Tag:</label> -->
+    <!-- <input type="text" name="tag_name" placeholder="tag" value="cute" /> -->
+    <!-- <br><br> -->
 
-    <button type="submit">Submit</button>
-  </form>
+    <!-- <button type="submit">Submit</button> -->
+  <!-- </form> -->
 
   <!-- Include the encryption library -->
    <script src="dist/bundle.js"></script> 
   <!-- <script src="demo.js"></script> -->
-  <script>
-    // Handle form submission
-    document.getElementById('myForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+  <!-- <script> -->
+    <!-- // Handle form submission -->
+    <!-- document.getElementById('myForm').addEventListener('submit', function(event) { -->
+      <!-- event.preventDefault(); -->
 
-      let form = event.target;
-      let formData = new FormData(form);
-      let object = {
-        "id": 1,
-        "category": {
-          "id": 1,
-          "name": formData.get('category_name')
-        },
-        "name": formData.get('name'),
-        "photoUrls": [formData.get('photoUrls')],
-        "tags": [
-          {
-            "id": 1,
-            "name": formData.get('tag_name')
-          }
-        ],
-        "status": "available"
-      };
+      <!-- let form = event.target; -->
+      <!-- let formData = new FormData(form); -->
+      <!-- let object = { -->
+        <!-- "id": 1, -->
+        <!-- "category": { -->
+          <!-- "id": 1, -->
+          <!-- "name": formData.get('category_name') -->
+        <!-- }, -->
+        <!-- "name": formData.get('name'), -->
+        <!-- "photoUrls": [formData.get('photoUrls')], -->
+        <!-- "tags": [ -->
+          <!-- { -->
+            <!-- "id": 1, -->
+            <!-- "name": formData.get('tag_name') -->
+          <!-- } -->
+        <!-- ], -->
+        <!-- "status": "available" -->
+      <!-- }; -->
 
-      let json = JSON.stringify(object);
+      <!-- let json = JSON.stringify(object); -->
 
-      // Send the form data as an XHR POST request or fetch POST request
-      // The encryption will be automatically handled by the 'encryption-library.js'
-      // Replace 'https://api.example.com/endpoint' with your actual API endpoint
-      let apiUrl = 'http://localhost:5179/v2/pet12';
+      <!-- // Send the form data as an XHR POST request or fetch POST request -->
+      <!-- // The encryption will be automatically handled by the 'encryption-library.js' -->
+      <!-- // Replace 'https://api.example.com/endpoint' with your actual API endpoint -->
+      <!-- let apiUrl = 'http://localhost:5179/v2/pet12'; -->
 
-      // Using XMLHttpRequest
-      let xhr = new XMLHttpRequest();
-      xhr.open('POST', apiUrl, true);
-      xhr.setRequestHeader('Content-Type', 'application/json');
-	  //xhr.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU3Q0U3Q0U1QURFRTk0NDc1N0QzRTY2ODRFOThEQzk1IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2OTA5OTM2MzgsImV4cCI6MTY5MDk5NzIzOCwiaXNzIjoiaHR0cHM6Ly9jdXN0b21lcnMtY2VudHJhbC12bS01Lnp0YS1nYXRld2F5LmNvbToyMTAyOSIsImF1ZCI6WyJJbnZvaWNlIiwiUHJvZHVjdCIsIndlYmFwaSJdLCJjbGllbnRfaWQiOiJjbGllbnQiLCJqdGkiOiJDNDIyRDlERDdGRkQ1QjQyQTc5Rjc5MEEzMDM5MDMxNyIsImlhdCI6MTY5MDk5MzYzOCwic2NvcGUiOlsiaW52b2ljZXM6cmVhZCIsImludm9pY2VzOndyaXRlIiwicHJvZHVjdHM6cmVhZCIsInByb2R1Y3RzOndyaXRlIiwid2ViYXBpOnJlYWQiLCJ3ZWJhcGk6d3JpdGUiXX0.UUT52S4Olo_w_4OGjuIo78BrSXpcHNkX4d7KSiJf9rWHdVFGcnQHpJptUyruRjeL2oJufd8UeuXwhwPM80NPMUkC28VHTVHGnMonjdWYXvBeQXG10h7N_BVEp9lANyOl6JdCgJsTsAp3Q-HKtw0WiE23lcv-nB54vFeziZfcytTBjFVipFp5eFvQLzNgnGezPbCxxSh4MfjUiWgREETG3SoCl7CjSWHwtvCCPCzkb32dHJ_AaMKTXI9WVj4202XjhaQtvOfqYYvhKqzpxws7PQ_vM2qB1y8TEPmDoSsVwyiuG-_PELaGwvYrkHn3fZwJhPCIa7ozP05HUbszIn6pjA');
-	  //xhr.setDisableHeaderCheck(true);
-	  //xhr.setIgnoreCertificateErrors(true);
+      <!-- // Using XMLHttpRequest -->
+      <!-- let xhr = new XMLHttpRequest(); -->
+      <!-- xhr.open('POST', apiUrl, true); -->
+      <!-- xhr.setRequestHeader('Content-Type', 'application/json'); -->
+	  <!-- //xhr.setRequestHeader('Authorization', 'Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkU3Q0U3Q0U1QURFRTk0NDc1N0QzRTY2ODRFOThEQzk1IiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2OTA5OTM2MzgsImV4cCI6MTY5MDk5NzIzOCwiaXNzIjoiaHR0cHM6Ly9jdXN0b21lcnMtY2VudHJhbC12bS01Lnp0YS1nYXRld2F5LmNvbToyMTAyOSIsImF1ZCI6WyJJbnZvaWNlIiwiUHJvZHVjdCIsIndlYmFwaSJdLCJjbGllbnRfaWQiOiJjbGllbnQiLCJqdGkiOiJDNDIyRDlERDdGRkQ1QjQyQTc5Rjc5MEEzMDM5MDMxNyIsImlhdCI6MTY5MDk5MzYzOCwic2NvcGUiOlsiaW52b2ljZXM6cmVhZCIsImludm9pY2VzOndyaXRlIiwicHJvZHVjdHM6cmVhZCIsInByb2R1Y3RzOndyaXRlIiwid2ViYXBpOnJlYWQiLCJ3ZWJhcGk6d3JpdGUiXX0.UUT52S4Olo_w_4OGjuIo78BrSXpcHNkX4d7KSiJf9rWHdVFGcnQHpJptUyruRjeL2oJufd8UeuXwhwPM80NPMUkC28VHTVHGnMonjdWYXvBeQXG10h7N_BVEp9lANyOl6JdCgJsTsAp3Q-HKtw0WiE23lcv-nB54vFeziZfcytTBjFVipFp5eFvQLzNgnGezPbCxxSh4MfjUiWgREETG3SoCl7CjSWHwtvCCPCzkb32dHJ_AaMKTXI9WVj4202XjhaQtvOfqYYvhKqzpxws7PQ_vM2qB1y8TEPmDoSsVwyiuG-_PELaGwvYrkHn3fZwJhPCIa7ozP05HUbszIn6pjA'); -->
+	  <!-- //xhr.setDisableHeaderCheck(true); -->
+	  <!-- //xhr.setIgnoreCertificateErrors(true); -->
 	 
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-          if (xhr.status === 200) {
-            //console.log('XHR Response:', xhr.responseText);
-          } else {
-            console.error('XHR Error:', xhr.status);
-          }
-        }
-      };
-      xhr.send(json);
+      <!-- xhr.onreadystatechange = function() { -->
+        <!-- if (xhr.readyState === XMLHttpRequest.DONE) { -->
+          <!-- if (xhr.status === 200) { -->
+            <!-- //console.log('XHR Response:', xhr.responseText); -->
+          <!-- } else { -->
+            <!-- console.error('XHR Error:', xhr.status); -->
+          <!-- } -->
+        <!-- } -->
+      <!-- }; -->
+      <!-- xhr.send(json); -->
 
-      // Using fetch
-      // fetch(apiUrl, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: json
-      // })
-      // .then(response => response.json())
-      // .then(data => {
-      //   console.log('Fetch Response:', data);
-      // })
-      // .catch(error => {
-      //   console.error('Fetch Error:', error);
-      // });
-    });
-  </script>
+      <!-- // Using fetch -->
+      <!-- // fetch(apiUrl, { -->
+      <!-- //   method: 'POST', -->
+      <!-- //   headers: { -->
+      <!-- //     'Content-Type': 'application/json' -->
+      <!-- //   }, -->
+      <!-- //   body: json -->
+      <!-- // }) -->
+      <!-- // .then(response => response.json()) -->
+      <!-- // .then(data => { -->
+      <!-- //   console.log('Fetch Response:', data); -->
+      <!-- // }) -->
+      <!-- // .catch(error => { -->
+      <!-- //   console.error('Fetch Error:', error); -->
+      <!-- // }); -->
+    <!-- }); -->
+  <!-- </script> -->
 
  <div style="position: relative;">
     <p style="position: absolute; top: 190px;">Page Version: 1.1</p>
