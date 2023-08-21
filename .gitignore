@@ -1,0 +1,15 @@
+
+*.config
+*.v2
+*.vsidx
+*.dll
+.vs/EHRApiDemo/v17/.suo
+*.lock
+*.dll
+*.pdb
+bin/Debug/net6.0/EHRApiDemo.dll
+bin/Debug/net6.0/EHRApiDemo.pdb
+bin/*
+obj/*
+.vs/*
+node_modules/*
