@@ -72,49 +72,6 @@ async function encryptData(data, host, iv) {
   return encryptedMessageBase64;
 }
 
-// Function to check if a property needs to be encrypted
-function shouldEncryptProperty(propertyName, schema) {
-  const propertyNames = propertyName.split('.');
-  let currentSchema = schema;
-  for (const name of propertyNames) {
-    if (currentSchema[name] === undefined) {
-	  console.log('Property name: '+name+'should encrypt property: false')
-      return false;
-    }
-    currentSchema = currentSchema[name];
-  }
-  
-  const result =  currentSchema === true;
-  console.log('Property name: '+propertyName+'. should encrypt property: '+result);
-  return result;
-}
-
-// Function to recursively encrypt properties based on the schema
-async function encryptProperties(data, schema, host, iv) {
-  for (const key in data) {
-    if (schema[key] !== undefined) {
-      if (typeof data[key] === 'object' && typeof schema[key] === 'object') {
-        data[key] = await encryptProperties(data[key], schema[key], host, iv);
-      } else if (shouldEncryptProperty(key, schema)) {
-        // Encrypt only if the schema value is true
-        data[key] = await encryptData(data[key], host, iv);
-      }
-    }
-  }
-  return data;
-}
-
-// Fetch encryption schema from API
-async function fetchEncryptionSchema(userId) {
-  try {
-    const response = await axios.get(`https://localhost:7180/api/EncryptionSettings/apis?userId=${userId}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching encryption schema:', error);
-    return [];
-  }
-}
-
 function interceptXHRRequests() {
    let open = XMLHttpRequest.prototype.open;
    XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
@@ -122,17 +79,14 @@ function interceptXHRRequests() {
      this._method = method; // Store the request method in _method property
 	 this._host = new URL(url).host; // Store the host information
      this._scheme = new URL(url).protocol.replace(':', ''); // Store the scheme without the colon
-	 this._relativePath = new URL(url).pathname; // Store the relative path of the request
 
 	 // Add condition to check if the URL matches the specific API path for key exchange
-     if (url.includes('api/handshake/key-exchange') || url.includes('api/EncryptionSettings/apis')) {
-		this._isInternalApi = true;
-     }
-	 else {
-		this._isInternalApi = false;
+     if (url.includes('api/handshake/key-exchange')) {
+     this._isKeyExchange = true;
+     } else {
+     this._isKeyExchange = false;
      }
 	
-	 
      open.call(this, method, url, async, user, password);
    };
 
@@ -140,88 +94,33 @@ function interceptXHRRequests() {
    XMLHttpRequest.prototype.send = function(data) {
      console.log('intercepted the request.');
 
-     if (this._method === 'POST' && !this._isInternalApi) { // Check the _method property for POST
-       console.log('Inside if POST. Relative Path:', this._relativePath);
+     if (this._method === 'POST' && !this._isKeyExchange) { // Check the _method property for POST
+       console.log('inside if post.');
 
        // Encrypt request data before sending to the API
        let requestData = JSON.parse(data);
 
-		// Fetch encryption schema for the user
-		const userId = 'vijay1'; // Replace with actual user ID
-		// const encryptionSchema = await fetchEncryptionSchema(userId);
+	   console.log('Request, before encryption:');
+	   console.log(requestData);
+	   const iv = crypto.randomBytes(16);
+	   const host = `${this._scheme}://${this._host}`;
+       encryptData(JSON.stringify(requestData), host, iv)
+         .then((encryptedData) => {
+          // Set a custom header for the encrypted data
+          this.setRequestHeader('X-Encrypted-Data', 'true');
+		  this.setRequestHeader('X-IV',iv.toString('base64'))
+		  console.log('Request, after encryption:');
+          // Replace the original request body with the encrypted data
+          console.log(encryptedData);
+          send.call(this, encryptedData);
+        })
+        .catch((error) => {
+           console.error(error);
 
-   // Fetch encryption schema for the user using Promise and then syntax
-       fetchEncryptionSchema(userId).then(encryptionSchema => {
-		   
-         const matchingSchema = encryptionSchema.find(schema =>
-           schema.httpMethod === this._method &&
-           schema.absoluteRequestUrl === this._url
-         );
-
-         if (matchingSchema) {
-				   // Encrypt properties according to the encryption schema
-				console.log('matching schema: ' + JSON.stringify(matchingSchema));
-			   console.log('Request, before encryption:');
-			   console.log(data);
-			   const iv = crypto.randomBytes(16);
-			   const host = `${this._scheme}://${this._host}`;
-
-				 encryptProperties(requestData, JSON.parse(matchingSchema.bodyEncryptionSchema), host, iv)
-				 .then(encryptedData => {
-				   this.setRequestHeader('X-Encrypted-Data', 'true');
-				   this.setRequestHeader('X-IV', iv.toString('base64'));
-				   this.setRequestHeader('X-ZT-UID', userId);
-				   console.log('Request, after encryption:');
-				   var encryptedDataJson = JSON.stringify(encryptedData);
-				   console.log(encryptedDataJson);
-				   send.call(this, encryptedDataJson);
-				 })
-				 .catch(error => {
-				   console.error('Error encrypting data:', error);
-				   send.call(this, data);
-				 });
-			 
-         }
-		 else {
-           // No matching schema found, send the original data
+           // Call the original 'send' function with the original data
            send.call(this, data);
-         }
-       }).catch(error => {
-         console.error('Error fetching encryption schema:', error);
-         // Call the original 'send' function with the original data
-         send.call(this, data);
-       });
-
-
-
-
-
-
-
-
-
-
-
-       // encryptData(JSON.stringify(requestData), host, iv)
-         // .then((encryptedData) => {
-          // // Set a custom header for the encrypted data
-          // this.setRequestHeader('X-Encrypted-Data', 'true');
-		  // this.setRequestHeader('X-IV',iv.toString('base64'))
-		  // console.log('Request, after encryption:');
-          // // Replace the original request body with the encrypted data
-          // console.log(encryptedData);
-          // send.call(this, encryptedData);
-        // })
-        // .catch((error) => {
-           // console.error(error);
-
-           // // Call the original 'send' function with the original data
-           // send.call(this, data);
-        // });
-		
-		
+        });
      } else {
-		 console.log('Inside else POST. Relative Path:', this._relativePath);
        // Call the original 'send' function for other types of requests
        send.call(this, data);
      }
@@ -230,10 +129,22 @@ function interceptXHRRequests() {
   // Create a wrapper function to handle the response
   function handleResponse() {
     if (this.readyState === XMLHttpRequest.DONE && this.getResponseHeader('content-type')?.startsWith('application/json')
+		// &&
+        // this.getRequestHeader('X-Encrypted-Data') === 'true'
 		 ) {
 		
 	   console.log('success');
 		
+	   // console.log('Response, before decryption:');
+       // console.log(this.responseText);
+
+      // // Decrypt the response data if it's not null or undefined
+      // let decryptedResponse = this.responseText ? decryptData(this.responseText) : null;
+	  
+      // // Replace the original response data with the decrypted data
+      // this.responseText = decryptedResponse;
+		
+	  
 	  
       // Log the decrypted response data (optional, for debugging purposes)
       console.log('Response, from server:');
@@ -252,3 +163,63 @@ function interceptXHRRequests() {
 interceptXHRRequests();
 
 console.log('zt encryption script loaded.');
+
+
+
+// Function to derive encryption key from shared secret
+// function deriveKeyFromSecret(secret) {
+  // const hash = crypto.createHash('sha256');
+  // hash.update(secret);
+  // return hash.digest();
+// }
+
+// async function startHandshakeAndSendMessage() {
+  // let aliceSharedSecretHex = await performKeyExchange();
+
+  // // Continue with encryption and sending of the message
+  // const message = 'Hello, Server! I\'m JavaScript.';
+  // const iv = crypto.randomBytes(16);
+  
+    // const aliceSharedSecret = Buffer.from(aliceSharedSecretHex, 'hex');
+  // const aliceEncryptionKey = deriveKeyFromSecret(aliceSharedSecret);
+
+  // //console.log('Alice Encryption Key:', aliceEncryptionKey.toString('hex')); // Log the encryption key
+  
+  // const cipher = crypto.createCipheriv('aes-256-cbc', 
+  // //aliceEncryptionKey, 
+  // aliceSharedSecret,
+  // iv);
+  // cipher.setAutoPadding(true); // Ensure PKCS7 padding
+  // const encryptedMessage = Buffer.concat([cipher.update(message, 'utf8'), cipher.final()]);
+
+  // const encryptedMessageBase64 = encryptedMessage.toString('base64');
+  // // const ivBase64 = iv.toString('base64');
+  // // Use the raw 16-byte IV, without base64 encoding
+  // const ivBytes = iv;
+  // console.log('_____________________________________________');
+  // console.log('');
+  // console.log('Sending actual API request to the server.');
+  // console.log('Actual message: ' + message);
+  // console.log('Encrypted message: ' + encryptedMessageBase64);
+  
+  // // Send the encrypted message and IV to the .NET API for decryption
+  // try {
+  // const responseText = await sendPostRequest(
+  // //'https://localhost:7179/api/handshake/decrypt-message'
+  // 'https://customers-central-vm-5.zta-gateway.com/api/handshake/decrypt-message'
+  // , {
+    // encryptedMessage: encryptedMessageBase64,
+    // iv: ivBytes.toString('base64')
+  // });
+
+  // console.log('Received response from Server.')
+  // // const response = JSON.parse(responseText);
+  // console.log('Decrypted Message from Server:', responseText);
+  // console.log('Request completed successfully.');
+// } catch (error) {
+  // console.error('Error decrypting message:', error);
+// }
+
+// }
+
+// startHandshakeAndSendMessage();

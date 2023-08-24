@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HTTP POST Request Example</title>
+</head>
+<body>
+
+<h2>Submit Request</h2>
+
+<form id="requestForm">
+    <label for="patientId">Patient ID:</label><br>
+    <input type="text" id="patientId" name="patientId" value="2"><br><br>
+    
+    <label for="note">Note:</label><br>
+    <input type="text" id="note" name="note" value="Patient has body headache again"><br><br>
+    
+    <label for="date">Date:</label><br>
+    <input type="datetime-local" id="date" name="date" value="2023-08-16T21:31:52"><br><br>
+    
+    <!-- Add other fields here as needed -->
+    
+    <input type="submit" value="Submit">
+</form>
+
+<!-- Include the encryption library -->
+<script src="dist/bundle.js"></script>
+
+<script>
+document.getElementById("requestForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+
+    const data = {
+        patientId: parseInt(formData.get("patientId")),
+        note: formData.get("note"),
+        date: formData.get("date"),
+        diagnosis: {
+            patientId: parseInt(formData.get("patientId")),
+            name: "Skin Issues",
+            diagnosisTypeId: 1,
+            description: "The Skin Disease."
+        },
+        treatmentPlan: {
+            description: "Weekly Treatment",
+            treatmentPlanTypeId: 1,
+            date: "2023-08-16T13:06:54.601Z",
+            note: "Needs a skin exam",
+            name: "Skin Treatment"
+        },
+        isArchived: false
+    };
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://localhost:7186/Record", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                const responseBody = xhr.responseText;
+                alert("Response:\n" + responseBody);
+            } else {
+                const errorResponse = xhr.responseText || "Request failed";
+                alert("Error:\n" + errorResponse);
+            }
+        }
+    };
+
+    xhr.send(JSON.stringify(data));
+});
+</script>
+
+</body>
+</html>
