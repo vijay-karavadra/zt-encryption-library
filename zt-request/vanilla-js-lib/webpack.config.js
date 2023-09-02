@@ -26,5 +26,5 @@ module.exports = {
             // process: 'process/browser',
         // }),
     // ],
-  mode: 'production'
+  mode: 'development'
 };

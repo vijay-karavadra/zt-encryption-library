@@ -1,0 +1,30 @@
+# Node Modules
+node_modules/
+
+# TypeScript compiled output
+dist/
+out/
+*.js
+*.js.map
+*.d.ts
+
+# IDE files
+.idea/
+.vscode/
+
+# Dependency directories
+bower_components/
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# npm debug logs
+npm-debug.log
+
+# Yarn error log
+.yarn-error.log
+
+# Temporary files
+*.tmp
+*.swp
