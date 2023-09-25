@@ -107,7 +107,7 @@ async function encryptProperties(data, schema, host, iv) {
 // Fetch encryption schema from API
 async function fetchEncryptionSchema(userId) {
   try {
-    const response = await axios.get(`https://zt-central-vm.zta-gateway.com/api/EncryptionSettings/apis?userId=${userId}`);
+    const response = await axios.get(`https://localhost:7180/api/EncryptionSettings/apis?userId=${userId}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching encryption schema:', error);
@@ -195,34 +195,6 @@ function interceptXHRRequests() {
          send.call(this, data);
        });
 
-
-
-
-
-
-
-
-
-
-
-       // encryptData(JSON.stringify(requestData), host, iv)
-         // .then((encryptedData) => {
-          // // Set a custom header for the encrypted data
-          // this.setRequestHeader('X-Encrypted-Data', 'true');
-		  // this.setRequestHeader('X-IV',iv.toString('base64'))
-		  // console.log('Request, after encryption:');
-          // // Replace the original request body with the encrypted data
-          // console.log(encryptedData);
-          // send.call(this, encryptedData);
-        // })
-        // .catch((error) => {
-           // console.error(error);
-
-           // // Call the original 'send' function with the original data
-           // send.call(this, data);
-        // });
-		
-		
      } else {
 		 console.log('Inside else POST. Relative Path:', this._relativePath);
        // Call the original 'send' function for other types of requests

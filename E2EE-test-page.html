@@ -9,7 +9,7 @@
 
 <form id="requestForm">
     <label for="patientId">Patient ID:</label><br>
-    <input type="text" id="patientId" name="patientId" value="2"><br><br>
+    <input type="text" id="patientId" name="patientId" value="6"><br><br>
     
     <label for="note">Note:</label><br>
     <input type="text" id="note" name="note" value="Patient has body headache again"><br><br>
@@ -52,7 +52,7 @@ document.getElementById("requestForm").addEventListener("submit", function(event
     };
 
     const xhr = new XMLHttpRequest();
-    xhr.open("POST", "https://localhost:7186/Record", true);
+    xhr.open("POST", "https://brave-rock-0c1d8c010.3.azurestaticapps.net/Record", true);
     xhr.setRequestHeader("Content-Type", "application/json");
 
     xhr.onreadystatechange = function() {
